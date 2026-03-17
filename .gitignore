@@ -1,0 +1,24 @@
+
+/dumgeonEscape (Mac).xcworkspace
+/Content
+
+# Unreal Engine
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# VS Code
+.vscode/
+
+# Mac
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcworkspace
+
+# Build files
+*.rsp
+*.o
+*.log
