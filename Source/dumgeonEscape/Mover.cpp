@@ -2,6 +2,8 @@
 
 #include "Mover.h"
 
+#include "Math/UnrealMathUtility.h"
+
 // Sets default values for this component's properties
 UMover::UMover()
 {
@@ -15,31 +17,61 @@ UMover::UMover()
 // Called when the game starts
 void UMover::BeginPlay()
 {
-	Super::BeginPlay();
+  Super::BeginPlay();
 
-	float MyFloat = 10.0f;
-	float *FloatPtr = &MyFloat;
 
-	float Result = *FloatPtr + 5.0f;
+  
+	// float MyFloat = 10.0f;
+	// float *FloatPtr = &MyFloat;
 
-	// ...
+	// float Result = *FloatPtr + 5.0f;
 
-	FVector MyVector = FVector(1.0f, 1.0f, 1.0f);
+	// // ...
 
-	FVector *VectorPtr = &MyVector;
+	// FVector MyVector = FVector(1.0f, 1.0f, 1.0f);
 
-	(*VectorPtr).X = 2.0f;
-	VectorPtr->Y = 3.0f;
-	VectorPtr->Z = 4.0f;
+	// FVector *VectorPtr = &MyVector;
 
-	FString MyVectorString = MyVector.ToCompactString();
-	UE_LOG(LogTemp, Display, TEXT("MyVector : %s"), *MyVectorString);
+	// (*VectorPtr).X = 2.0f;
+	// VectorPtr->Y = 3.0f;
+	// VectorPtr->Z = 4.0f;
+
+	// FString MyVectorString = MyVector.ToCompactString();
+	// UE_LOG(LogTemp, Display, TEXT("MyVector : %s"), *MyVectorString);
+        // AActor *MyOwner = GetOwner();
+
+        //    UE_LOG(LogTemp, Display, TEXT("MyOwner : %s"),
+        //    *MyOwner->GetActorNameOrLabel());
+
+  StartLocation = GetOwner()->GetActorLocation();
+
 }
 
 // Called every frame
 void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+  Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
-}
+
+
+    if(ShouldMove)
+  {
+    TargetLocation = StartLocation + MoveOffset;
+  } else {
+    TargetLocation = StartLocation;
+  }
+
+  FVector CurrentLocation = GetOwner()->GetActorLocation();
+
+  ReachedTarget = CurrentLocation.Equals(TargetLocation);
+  if(!ReachedTarget) {  float speed = MoveOffset.Length() / MoveTime;
+
+    FVector NewLocation =FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, speed);
+
+ 	 GetOwner()->SetActorLocation(NewLocation); }
+
+   
+ 
+
+
+  }
